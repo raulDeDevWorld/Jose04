@@ -188,7 +188,23 @@ export default function Home() {
     window.open(`https://api.whatsapp.com/send?phone=+59169941749&text=${whatsappMessage}`, '_blank')
 
   }
+  async function HandlerCheckOut2(e) {
 
+    //  const data =  Object.entries(calcValue).map((i, index) => `${i[0]}: ${i[1]}`)
+
+
+    const db = Object.entries({ORIGEN: inputRef.current.value, DESTINO: inputRef2.current.value, ...selectValue}).reverse().reduce((acc, i, index) => {
+      const data = `${i[0]}: ${i[1]}\n`
+      return data + '\r\n' + acc
+    }, ``)
+
+    var whatsappMessage = "SOLICITUD DE SERVICIO" + "\r\n\r\n" + db
+    whatsappMessage = window.encodeURIComponent(whatsappMessage)
+    console.log(whatsappMessage)
+    // window.open(`https://api.whatsapp.com/send?phone=${perfil.whatsapp.replaceAll(' ', '')}&text=${whatsappMessage}`, '_blank')
+    window.open(`https://api.whatsapp.com/send?phone=+59169941749&text=${whatsappMessage}`, '_blank')
+
+  }
 
   function handlerOnChange(e) {
     e.stopPropagation();
@@ -396,7 +412,7 @@ export default function Home() {
                   <SelectSimple arr={inputRef.current ? Object.values(userDB.priceFTL).filter((i) => i.ORIGEN === inputRef.current.value && i.DESTINO === inputRef2.current.value).map((i) => i['SERVICIO']).filter(onlyUnique) : []} name='SERVICIO' click={handlerClickSelect} defaultValue={selectValue['SERVICIO'] ? selectValue['SERVICIO'] : 'Seleccionar'} uuid='8768798' label='Servicio' required={true}></SelectSimple>
                   {selectValue['VOLUMEN M3'] <= 43 && selectValue['PESO (KG)'] <= 25000
                     ? <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[12px] w-full  px-5 py-2.5 text-center  mt-7 lg:col-span-2">Cotizar</button>
-                    : <button type="submit" className=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[12px] w-full  px-5 py-2.5 text-center  mt-7 lg:col-span-2          text-white bg-green-500 hover:bg-green-500     " onClick={HandlerCheckOut}>Solicitar Cotizacion</button>
+                    : <button type="submit" className=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[12px] w-full  px-5 py-2.5 text-center  mt-7 lg:col-span-2          text-white bg-green-500 hover:bg-green-500     " onClick={HandlerCheckOut2}>Solicitar Cotizacion</button>
 
                   }
                 </form>

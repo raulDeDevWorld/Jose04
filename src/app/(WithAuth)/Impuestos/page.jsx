@@ -119,20 +119,20 @@ export default function Home() {
         return (CIF() * (.57 / 100)).toFixed(2)
     }
     function comisionAgencia() {
-        if (CIF() > 0 && CIF() < 1001) {return  '20 USD' }
-        if (CIF() > 1000 && CIF() < 10001) {return  CIF() * (2 / 100) }
-        if (CIF() > 10000 && CIF() < 20001) {return  CIF() * (1.5 / 100) }
-        if (CIF() > 20000 && CIF() < 30001) {return  CIF() * (1.25 / 100) }
-        if (CIF() > 30000 && CIF() < 50001) {return  CIF() * (1 / 100) }
-        if (CIF() > 50000 && CIF() < 100001) {return  CIF() * (0.75 / 100) }
-        if (CIF() > 100000 && CIF() < 1000000000000) {return  CIF() * (0.5 / 100) }
+        if (CIF() > 0 && CIF() < 1001) { return '20 USD' }
+        if (CIF() > 1000 && CIF() < 10001) { return (CIF() * (2 / 100)).toFixed(2) }
+        if (CIF() > 10000 && CIF() < 20001) { return (CIF() * (1.5 / 100)).toFixed(2) }
+        if (CIF() > 20000 && CIF() < 30001) { return (CIF() * (1.25 / 100)).toFixed(2) }
+        if (CIF() > 30000 && CIF() < 50001) { return (CIF() * (1 / 100)).toFixed(2) }
+        if (CIF() > 50000 && CIF() < 100001) { return (CIF() * (0.75 / 100)).toFixed(2) }
+        if (CIF() > 100000 && CIF() < 1000000000000) { return (CIF() * (0.5 / 100)).toFixed(2) }
     }
     function totalDespachoAduanero() {
-       return comisionAgencia() +50
+        return (comisionAgencia() *1 + 50).toFixed(2)
     }
     function totalCostosImportacion() {
-        return totalDespachoAduanero()*1 +almacenaje()*1 + totalImpuestos()*1
-     }
+        return (totalDespachoAduanero() * 1 + almacenaje() * 1 + totalImpuestos() * 1).toFixed(2)
+    }
     return (
         <div className="h-full "
             style={{
@@ -171,7 +171,7 @@ export default function Home() {
 
                         <InputFlotante type="number" id="floating_6" onChange={onChangeHandler} defaultValue={data['Seguro']} required label={'Seguro'} />
 
-                        <table>
+                        <table className=' w-[80vw] md:min-w-[400px]'>
                             <tbody>
                                 {/* <tr>
                                     <td>MERCANCIA</td>
@@ -200,44 +200,44 @@ export default function Home() {
                                 <tr>
                                     <td>CIF FRONTERA</td>
                                     <td>
-                                        {CIF()}
+                                        {CIF()} USD
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>GA</td>
                                     <td>
-                                        {GA()}
+                                        {GA()} USD
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>BASE IMPONIBLE IVA</td>
                                     <td>
-                                        {baseImponible()}
+                                        {baseImponible()} USD
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>IVA</td>
                                     <td>
-                                        {IVA()}
+                                        {IVA()} USD
                                         {/* {data.mercancia && (CIF() + (CIF() * (mercancias.reduce((acc, i) => { return { ...acc, [i.MERCANCIA]: i } }, {})[data.mercancia]['G.A. %'] / 100))) * (mercancias.reduce((acc, i) => { return { ...acc, [i.MERCANCIA]: i } }, {})[data.mercancia]['IVA %'] / 100)} */}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>USO DE SISTEMA</td>
-                                    <td>15</td>
+                                    <td>15 USD</td>
                                 </tr>
                                 <tr>
                                     <td>TOTAL IMPUESTOS</td>
-                                    <td>{totalImpuestos()}</td>
+                                    <td>{totalImpuestos()} USD</td>
                                 </tr>
                                 <tr>
                                     <td>ALMACENAJE 0,57%CIF</td>
-                                    <td>{almacenaje()}</td>
+                                    <td>{almacenaje()} USD</td>
                                 </tr>
                                 <tr>
                                     <td>COMISION AGENCIA</td>
                                     <td>
-                                        {comisionAgencia()}
+                                        {comisionAgencia()} USD
 
                                     </td>
                                 </tr>
@@ -254,43 +254,11 @@ export default function Home() {
                                 <tr>
                                     <td>TOTAL COSTOS IMPORTACION</td>
                                     <td>
-                                        {
-totalCostosImportacion()
-                                        }
-                               </td>
+                                        {totalCostosImportacion()}  USD
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        {/* 
-                        <InputFlotante type="number" id="floating_5" onChange={onChangeHandler} defaultValue={data['Transporte terrestre %']} required label={'Transporte terrestre %'} />
-                        <InputFlotante type="number" id="floating_6" onChange={onChangeHandler} defaultValue={data['CIF frontera']} required label={'CIF frontera'} />
-                        <InputFlotante type="number" id="floating_7" onChange={onChangeHandler} defaultValue={data['GA']} required label={'GA'} />
-                        <InputFlotante type="number" id="floating_8" onChange={onChangeHandler} defaultValue={data['BASE IMPONIBLE IVA']} required label={'BASE IMPONIBLE IVA'} />
-                        <InputFlotante type="number" id="floating_4" onChange={onChangeHandler} defaultValue={data['IVA']} required label={'IVA'} />
-                        <InputFlotante type="number" id="floating_4" onChange={onChangeHandler} defaultValue={data['USO DE SISTEMA']} required label={'USO DE SISTEMA'} />
-                        <InputFlotante type="number" id="floating_4" onChange={onChangeHandler} defaultValue={data['TOTAL IMPUESTOS']} required label={'TOTAL IMPUESTOS'} />
-                        <InputFlotante type="number" id="floating_4" onChange={onChangeHandler} defaultValue={data['ALMACENAJE 0,57%CIF']} required label={'ALMACENAJE 0,57%CIF'} />
-                        <InputFlotante type="number" id="floating_4" onChange={onChangeHandler} defaultValue={data['COMISION AGENCIA']} required label={'COMISION AGENCIA'} />
-                        <InputFlotante type="number" id="floating_4" onChange={onChangeHandler} defaultValue={data['GASTOS DE DESPACHO']} required label={'GASTOS DE DESPACHO'} />
-                        <InputFlotante type="number" id="floating_4" onChange={onChangeHandler} defaultValue={data['TOTAL DESPACHO ADUANERO']} required label={'TOTAL DESPACHO ADUANERO'} />
-                        <InputFlotante type="number" id="floating_4" onChange={onChangeHandler} defaultValue={data['TOTAL COSTOS IMPORTACION']} required label={'TOTAL COSTOS IMPORTACION'} /> */}
 
                         <Button theme="Primary" click={formHandler} >CALCULAR</Button>
                     </form>

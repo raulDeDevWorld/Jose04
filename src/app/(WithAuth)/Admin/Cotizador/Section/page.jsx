@@ -61,8 +61,8 @@ export default function Home() {
         <div className="min-h-full">
             <div className="fixed top-0 left-0 flex justify-center w-full h-auto bg-[#000000b4] p-0 z-40 " >
                 <div className="relative w-[95%] h-screen overflow-y-scroll lg:w-[50%] bg-white border-b border-gray-900/10 pt-16 pb-16 lg:pb-4 px-5">
-                    <Link href={`/Admin/Cotizador/Add?item=${query}`} className='font-medium'>
-                        <div className="absolute w-[150px] top-5 left-5 text-black p-1 rounded-tl-lg rounded-br-lg text-center bg-[#F1BA06]" >
+                    <Link href={`/Admin/Cotizador/Add?item=${query}`} className='fixed bottom-[100px] right-[100px]  rounded-full z-50 block font-medium '>
+                        <div className="absolute top-5 left-5  p-1 border text-white border-white rounded-full h-[50px] w-[50px] text-center flex items-center justify-center bg-[#F1BA06]" >
                             ADD
                         </div>
                     </Link>

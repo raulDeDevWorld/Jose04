@@ -1,6 +1,6 @@
 'use client';
 import { useUser } from '@/context/Context'
-import { onAuth, signUpWithEmail, writeUserData } from '@/firebase/utils'
+import { onAuth, signUpWithEmail, writeUserData, removeData } from '@/firebase/utils'
 import { uploadIMG } from '@/firebase/storage'
 import { Suspense } from 'react'
 
@@ -8,12 +8,12 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import style from '@/app/page.module.css'
-// import Button from '@/components/Button'
+import Button from '@/components/Button'
 import Error from '@/components/Error'
 import Loader from '@/components/Loader'
 import ScrollAnimation from 'react-animate-on-scroll';
 import "animate.css/animate.compat.css"
-import Input from '@/components/Input'
+import { generateUUID } from '@/utils/UIDgenerator'
 import { useRouter } from 'next/navigation';
 import Modal from '@/components/Modal'
 import TextEditor from '@/components/TextEditor'
@@ -30,11 +30,11 @@ export default function Home() {
 
 
 
-    const Button = ({ children }) => {
-        return <Suspense ><button className='bg-[#ffbd2f] w-[200px] p-2 rounded-[5px] inline'>
-            {children}
-        </button></Suspense>
-    }
+    // const Button = ({ children }) => {
+    //     return <Suspense ><button className='bg-[#ffbd2f] w-[200px] p-2 rounded-[5px] inline'>
+    //         {children}
+    //     </button></Suspense>
+    // }
     const { user, introVideo, userDB, setUserProfile, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, item, cliente, setCliente, cart, setCart, modal, setModal } = useUser()
     const router = useRouter()
 
@@ -79,8 +79,8 @@ export default function Home() {
         return setData2(db)
     }
 
-    function onChangeHandler2(e, index) {
-        setData2({ ...data2, [`item${index}`]: { ...data2[`item${index}`], [e.target.name]: e.target.value } })
+    function onChangeHandler2(e, i) {
+        setData2({ ...data2, [i]: { ...data2[i], [e.target.name]: e.target.value } })
     }
 
 
@@ -90,11 +90,11 @@ export default function Home() {
         setData3({ ...data3, [`item${index}`]: { ...data3[`item${index}`], file: e.target.files[0] } })
     }
     function onChangeHandler3(e, index) {
-     setData3({ ...data3, [`item${index}`]: { ...data3[`item${index}`], [e.target.name]: e.target.value } })
+        setData3({ ...data3, [`item${index}`]: { ...data3[`item${index}`], [e.target.name]: e.target.value } })
     }
     function onChangeHandler4(e, index) {
         setData3({ ...data3, [`item${index}`]: { ...data3[`item${index}`], paragraph: e } })
-       }
+    }
     function handlerLess3() {
         let db = { ...data3 };
         delete db[`item${data3 !== undefined && Object.keys(data3).length - 1}`];
@@ -108,11 +108,18 @@ export default function Home() {
     function saveFrontPage(e) {
         e.preventDefault()
         setUserSuccess('Cargando')
-        if (e.target[0].files[0]) {
-            uploadIMG(`/Cliente/${query}`, '/', query, dataURL.file, { ...data, content: textEditor, miniTarjetas: data2 }, setUserSuccess)
-        } else {
-            writeUserData(`/Cliente/${query}`, { ...data, content: textEditor, miniTarjetas: data2 }, setUserSuccess)
-        }
+        writeUserData(`/Cliente/${query}`, { ...data, content: textEditor, miniTarjetas: data2 }, setUserSuccess)
+
+        // if (e.target[0].files[0]) {
+        //     uploadIMG(`/Cliente/${query}`, '/', query, dataURL.file, { ...data, content: textEditor, miniTarjetas: data2 }, setUserSuccess)
+        // } else {
+        //     writeUserData(`/Cliente/${query}`, { ...data, content: textEditor, miniTarjetas: data2 }, setUserSuccess)
+        // }
+    }
+    function saveMiniTarjetas(e) {
+        e.preventDefault()
+        setUserSuccess('Cargando')
+        writeUserData(`/Cliente/${query}`, { miniTarjetas: data2 }, setUserSuccess)
     }
     function saveFrontPage2(e) {
         e.preventDefault()
@@ -154,7 +161,17 @@ export default function Home() {
     }
 
 
+    function deleteHandler(e, route, key, update) {
+        e.preventDefault()
+        setUserSuccess('Cargando')
+        let val = { ...data2 }
+        delete val[key]
+        console.log(val)
+        update(val)
+        removeData(route, null, setUserSuccess)
 
+
+    }
 
 
 
@@ -178,7 +195,7 @@ export default function Home() {
             setTextEditor(cliente[query].content)
         }
     }, [textEditor, data2, data3, query])
-
+    console.log(data2)
     return (
 
         <div className="min-h-full">
@@ -200,8 +217,8 @@ export default function Home() {
 
                     {option === 'Seccion' && <form className="relative  pt-5" onSubmit={saveFrontPage} >
                         <div className="col-span-full">
-                            <h2 className="text-base font-bold leading-7 text-gray-900  text-center p-5 ">Administrar secciones</h2>
-                            <label htmlFor="cover-photo" className="block text-[12px] font-medium leading-6 text-gray-900">Video de imagen de fondo</label>
+                            <h2 className="text-base font-bold leading-7 text-gray-900  text-center p-5 ">ADMINISTRAR SECCIONES</h2>
+                            {/* <label htmlFor="cover-photo" className="block text-[12px] font-medium leading-6 text-gray-900">Video de imagen de fondo</label>
                             <div className="w-full flex justify-center">
                                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10 md:w-[250px] md:h-[200px]"
                                     style={{
@@ -224,13 +241,18 @@ export default function Home() {
                                         <p className="text-xs leading-5 text-gray-600">MP4</p>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div className='flex justify-center p-5'>
                                 <Suspense >
-                                    <video src={dataURL && dataURL.frontPage && dataURL.frontPage ? dataURL.frontPage : (cliente && cliente[query] && cliente[query].url)} className='h-[300px]' autoPlay loop muted ></video>
+                                    <video src={data && data.url && data.url ? data.url : (cliente && cliente[query] && cliente[query].url)} className='h-[300px]' autoPlay loop muted ></video>
+                                    {/* <video src={dataURL && dataURL.frontPage && dataURL.frontPage ? dataURL.frontPage : (cliente && cliente[query] && cliente[query].url)} className='h-[300px]' autoPlay loop muted ></video> */}
                                 </Suspense >
                             </div>
+                        </div>
+                        <div className="sm:col-span-3">
+                            <label htmlFor="last-name" className="block text-[12px] font-medium leading-6 text-gray-900">Subir Video por URL</label>
+                            <input type="text" name="url" onChange={onChangeHandler} className="block w-full rounded-md border-0 p-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-[12px] sm:leading-6" defaultValue={cliente && cliente[query] && cliente[query].url} />
                         </div>
                         <div className="sm:col-span-3">
                             <label htmlFor="last-name" className="block text-[12px] font-medium leading-6 text-gray-900">Titulo</label>
@@ -244,34 +266,41 @@ export default function Home() {
                                 </div>
                             </div>
                         </div>
+                        <div className="mt-6 flex items-center justify-center gap-x-6">
+                            <Button type="submit" theme="Primary">Guardar</Button>
+                        </div>
+                    </form>}
 
-
-
+                    {option === 'Seccion' && <form className="relative  pt-5" onSubmit={saveMiniTarjetas} >
                         {/* ---------------------------------TARJETAS 2---------------------------------------- */}
 
                         <div class="inline-flex">
-                            <button type='button' class="bg-red-500 text-white font-bold py-2 px-4 rounded-l" onClick={handlerLess2}>
+                            {/* <button type='button' class="bg-red-500 text-white font-bold py-2 px-4 rounded-l" onClick={handlerLess2}>
                                 -
-                            </button>
-                            <button type='button' class="bg-green-500 text-white font-bold py-2 px-4 rounded-r" onClick={() => setData2({ ...data2, [`item${data2 !== undefined && Object.keys(data2).length}`]: { ic: '', ip: '' } })} >
-                                +
+                            </button> */}
+                            <button type='button' class="bg-green-500 text-white font-bold py-2 px-4 rounded-r" onClick={() => setData2({ ...data2, [generateUUID()]: { ic: '', ip: '' } })} >
+                                ADD
                             </button>
                         </div>
-
-                        {data2 && data2 !== undefined && Object.values(data2).map((i, index) => {
+                        {data2 && data2 !== undefined && Object.entries(data2).map((i) => {
                             return <div className="sm:col-span-3 mb-5 pb-5 border-b-[.5px] border-[#666666]">
+                                <h4 className='text-base font-bold leading-7 text-gray-900  text-center p-5'>MINI TARJETA</h4>
                                 <label htmlFor="first-name" className="block text-[12px] font-medium leading-6 text-gray-900">Item principal</label>
-                                <input type="text" name={`ip`} onChange={(e) => onChangeHandler2(e, index)} className="block w-full rounded-md border-0 p-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-[12px] sm:leading-6" defaultValue={data2[`item${index}`][`ip`]} />
+                                <input type="text" name={`ip`} onChange={(e) => onChangeHandler2(e, i[0])} className="block w-full rounded-md border-0 p-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-[12px] sm:leading-6" defaultValue={i[1][`ip`]} />
                                 <label htmlFor="first-name" className="block text-[12px] font-medium leading-6 text-gray-900">Item contenido</label>
-                                <input type="text" name={`ic`} onChange={(e) => onChangeHandler2(e, index)} className="block w-full rounded-md border-0 p-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-[12px] sm:leading-6" defaultValue={data2[`item${index}`][`ic`]} />
+                                <input type="text" name={`ic`} onChange={(e) => onChangeHandler2(e, i[0])} className="block w-full rounded-md border-0 p-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-[12px] sm:leading-6" defaultValue={i[1][`ic`]} />
+                                <div className="mt-6 flex items-center justify-center gap-x-6">
+                                    <Button type="button" theme="Danger" click={(e) => deleteHandler(e, `Cliente/${query}/miniTarjetas/${i[0]}`, i[0], setData2)}>Eliminar</Button>
+                                    <Button type="submit" theme="Primary">Guardar</Button>
+
+                                </div>
+
                             </div>
                         })
                         }
                         {/* ----------------------------------------------------------------------------------------- */}
 
-                        <div className="mt-6 flex items-center justify-center gap-x-6">
-                            <Button type="submit" theme="Primary">Guardar</Button>
-                        </div>
+
 
                     </form>}
 
@@ -284,14 +313,14 @@ export default function Home() {
                         {/* ---------------------------------TARJETAS 3---------------------------------------- */}
 
 
-                        <div class="inline-flex">
+                        {/* <div class="inline-flex">
                             <button type='button' class="bg-red-500 text-white font-bold py-2 px-4 rounded-l" onClick={handlerLess3}>
                                 -
                             </button>
                             <button type='button' class="bg-green-500 text-white font-bold py-2 px-4 rounded-r" onClick={() => setData3({ ...data3, [`item${data3 !== undefined && Object.keys(data3).length}`]: { title: '', paragraph: '' } })} >
                                 +
                             </button>
-                        </div>
+                        </div> */}
 
                         {data3 && data3 !== undefined && Object.values(data3).map((i, index) => {
                             return <div className="sm:col-span-3 mb-5 pb-5 border-b-[.5px] border-[#666666]">
@@ -299,34 +328,46 @@ export default function Home() {
 
                                 <div className="w-full flex justify-center">
                                     <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10 md:w-[250px] md:h-[200px]"
+                                        // style={{
+                                        //     backgroundImage: `url('${data3[`item${index}`][`file`] ? URL.createObjectURL(data3[`item${index}`][`file`]) : (data3[`item${index}`] && data3[`item${index}`][`url`] && data3[`item${index}`][`url`] && data3[`item${index}`][`url`])}')`,
+                                        //     backgroundSize: 'contain',
+                                        //     backgroundRepeat: 'no-repeat',
+                                        //     backgroundPosition: 'center'
+                                        // }}
                                         style={{
-                                            backgroundImage: `url('${data3[`item${index}`][`file`] ? URL.createObjectURL(data3[`item${index}`][`file`]) : (data3[`item${index}`] && data3[`item${index}`][`url`] && data3[`item${index}`][`url`] && data3[`item${index}`][`url`])}')`,
+                                            backgroundImage: `url(${data3[`item${index}`][`url`]})`,
                                             backgroundSize: 'contain',
                                             backgroundRepeat: 'no-repeat',
                                             backgroundPosition: 'center'
-                                        }}>
-                                        <div className="text-center">
+                                        }}
+                                    >
+                                        <div className="text-center flex flex-col justify-center">
                                             <svg className="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                                                 <path fillRule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clipRule="evenodd" />
                                             </svg>
-                                            <div className="mt-4 flex text-[12px] leading-6 text-gray-600">
+                                            {/* <div className="mt-4 flex text-[12px] leading-6 text-gray-600">
                                                 <label htmlFor={`fileUpload${index}`} className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
                                                     <span>Subir imagen</span>
                                                     <input id={`fileUpload${index}`} name={`frontPage${index}`} onChange={(e) => handlerImage3(e, index)} type="file" accept="image/*" className="sr-only" />
                                                 </label>
                                                 <p className="pl-1">menos de 3mb</p>
-                                            </div>
+                                            </div> */}
                                             <p className="text-xs leading-5 text-gray-600">PNG, JPG, GIF</p>
                                         </div>
                                     </div>
                                 </div>
 
-
+                                <label htmlFor="first-name" className="block text-[12px] font-medium leading-6 text-gray-900">IMG url</label>
+                                <input type="text" name={`url`} onChange={(e) => onChangeHandler3(e, index)} className="block w-full rounded-md border-0 p-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-[12px] sm:leading-6" defaultValue={data3[`item${index}`][`url`]} />
                                 <label htmlFor="first-name" className="block text-[12px] font-medium leading-6 text-gray-900">Titulo</label>
                                 <input type="text" name={`title`} onChange={(e) => onChangeHandler3(e, index)} className="block w-full rounded-md border-0 p-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-[12px] sm:leading-6" defaultValue={data3[`item${index}`][`title`]} />
                                 <label htmlFor="first-name" className="block text-[12px] font-medium leading-6 text-gray-900">Descripción</label>
                                 <TextEditorSimple value={data3[`item${index}`][`paragraph`]} setValue={(e) => onChangeHandler4(e, index)} edit={true} ></TextEditorSimple>
                                 {/* <input type="text" name={`paragraph`} onChange={(e) => onChangeHandler3(e, index)} className="block w-full rounded-md border-0 p-1.5 mt-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-[12px] sm:leading-6" defaultValue={data3[`item${index}`][`paragraph`]} /> */}
+                                <br />
+                                <div className='flex justify-center'>
+                                    <Button type="button" theme="Danger" click={(e) => deleteHandler(e, `item${index}`)}>Eliminar</Button>
+                                </div>
                             </div>
                         })
                         }

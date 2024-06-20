@@ -6,7 +6,7 @@ export default function Button({ theme, type, styled, click, children }) {
         case 'Transparent':
             return <button
                 type={type}
-                 className="text-white bg-transparent border border-gray-100 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-[16px] w-full px-2 py-3 text-center z-20"
+                 className="text-white bg-transparent border border-gray-100 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-[16px] w-full px-2 py-3 max-w-[300px] text-center z-20"
                 //  className="text-white bg-violet-700 hover:bg-violet-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[12px] w-full sm:w-auto px-5 py-2.5 text-center 
                 // dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 onClick={click}
@@ -17,7 +17,7 @@ export default function Button({ theme, type, styled, click, children }) {
         case 'Primary':
             return <button
                 type={type}
-                 className="bg-[#F1BA06] border border-gray-100  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-[12px] w-full px-2 py-3 text-center z-20"
+                 className="bg-[#F1BA06] border border-gray-100  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-[12px] w-full px-2 py-3 max-w-[300px] text-center z-20"
                 //  className="text-white bg-violet-700 hover:bg-violet-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[12px] w-full sm:w-auto px-5 py-2.5 text-center 
                 // dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 onClick={click}
@@ -28,7 +28,7 @@ export default function Button({ theme, type, styled, click, children }) {
         case 'Secondary':
             return <button
                 type={type}
-                 className="text-white bg-[#2A52BE] border border-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-[16px] w-full px-2 py-3 text-center z-20"
+                 className="text-white bg-[#2A52BE] border border-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-[16px] w-full px-2 py-3 max-w-[300px] text-center z-20"
                 //  className="text-white bg-violet-700 hover:bg-violet-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[12px] w-full sm:w-auto px-5 py-2.5 text-center 
                 // dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 onClick={click}
@@ -77,7 +77,7 @@ export default function Button({ theme, type, styled, click, children }) {
         case 'Danger':
             return <button
                 type={type}
-                 className="text-white bg-red-500  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-[14px] w-full px-2 py-3 text-center z-20"
+                 className="text-white bg-red-500  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-[14px] w-full px-2 py-3 max-w-[300px] text-center z-20"
                 //  className="text-white bg-violet-700 hover:bg-violet-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[12px] w-full sm:w-auto px-5 py-2.5 text-center 
                 // dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 onClick={click}
@@ -97,7 +97,7 @@ export default function Button({ theme, type, styled, click, children }) {
         case 'MiniPrimary':
             return <button
                 type={type}
-                 className="relative text-white bg-[#2A52BE] border border-gray-100 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-full text-[16px] w-full px-6 py-3  text-center font-medium z-20"
+                 className="relative text-white bg-[#2A52BE] border border-gray-100 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-full text-[16px] w-full px-6 py-3 max-w-[300px]  text-center font-medium z-20"
                 //  className="text-white bg-violet-700 hover:bg-violet-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[12px] w-full sm:w-auto px-5 py-2.5 text-center 
                 // dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 onClick={click}
@@ -108,7 +108,7 @@ export default function Button({ theme, type, styled, click, children }) {
         case 'MiniPrimaryComprar':
             return <button
                 type={type}
-                 className="relative text-white bg-[#2A52BE] border border-gray-100 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-full text-[16px] w-full px-6 py-3  text-center font-medium z-20"
+                 className="relative text-white bg-[#2A52BE] border border-gray-100 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-full text-[16px] w-full px-6 py-3 max-w-[300px]  text-center font-medium z-20"
                 //  className="text-white bg-violet-700 hover:bg-violet-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[12px] w-full sm:w-auto px-5 py-2.5 text-center 
                 // dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 onClick={click}
@@ -136,7 +136,7 @@ export default function Button({ theme, type, styled, click, children }) {
         case 'MiniSecondary':
             return <button
                 type={type}
-                 className="relative text-white bg-violet-700 hover:bg-violet-700 border border-gray-100 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-full text-[16px] w-full px-6 py-3  text-center font-medium z-20"
+                 className="relative text-white bg-violet-700 hover:bg-violet-700 border border-gray-100 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-full text-[16px] w-full px-6 py-3 max-w-[300px]  text-center font-medium z-20"
                 //  className="text-white bg-violet-700 hover:bg-violet-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[12px] w-full sm:w-auto px-5 py-2.5 text-center 
                 // dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 onClick={click}
@@ -147,7 +147,7 @@ export default function Button({ theme, type, styled, click, children }) {
         case 'MiniSuccess':
             return <button
                 type={type}
-                 className="relative text-white bg-[#2A52BE] border border-gray-100 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-full text-[16px] w-full px-6 py-3  text-center font-medium z-20"
+                 className="relative text-white bg-[#2A52BE] border border-gray-100 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-full text-[16px] w-full px-6 py-3 max-w-[300px]  text-center font-medium z-20"
                 //  className="text-white bg-violet-700 hover:bg-violet-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[12px] w-full sm:w-auto px-5 py-2.5 text-center 
                 // dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 onClick={click}
@@ -157,7 +157,7 @@ export default function Button({ theme, type, styled, click, children }) {
         case 'MiniSuccessRecetar':
             return <button
                 type={type}
-                 className="text-white bg-[#32CD32] hover:bg-violet-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-[16px] w-full px-6 py-3  text-center z-20"
+                 className="text-white bg-[#32CD32] hover:bg-violet-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-[16px] w-full px-6 py-3 max-w-[300px]  text-center z-20"
                 //  className="text-white bg-violet-700 hover:bg-violet-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[12px] w-full sm:w-auto px-5 py-2.5 text-center 
                 // dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 onClick={click}
